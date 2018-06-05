@@ -5,7 +5,7 @@
   "background_color": "#f32121",
   "display": "fullscreen",
   "Scope": "/",
-  "start_url": "/https://l1de5.github.io/RotasRS/index.html",
+  "start_url": "https://l1de5.github.io/RotasRS/index.html",
   "icons": [
     {
       "src": "images/icons/icon-72x72.png",
