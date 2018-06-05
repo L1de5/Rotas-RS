@@ -15,7 +15,7 @@ function initialize() {
 	directionsDisplay.setMap(map);
 	directionsDisplay.setPanel(document.getElementById("trajeto-texto"));
 	
-	if (localStorage.getItem('geolocation') === null){
+	// if (localStorage.getItem('geolocation') === null){
 	// 	if (navigator.geolocation) {
 	// 		navigator.geolocation.getCurrentPosition(function (position) {
 
@@ -62,7 +62,7 @@ function atualiza(){
 		});
 	}
 }
-initialize();
+// initialize();
 
 $("form").submit(function(event) {
 	event.preventDefault();
@@ -76,9 +76,9 @@ $("form").submit(function(event) {
 		travelMode: google.maps.TravelMode.DRIVING
 	}; 	
 	
-	directionsService.route(request, function(result, status) {
-		if (status == google.maps.DirectionsStatus.OK) {
-			directionsDisplay.setDirections(result);
-		}
-	});
+	// directionsService.route(request, function(result, status) {
+	// 	if (status == google.maps.DirectionsStatus.OK) {
+	// 		directionsDisplay.setDirections(result);
+	// 	}
+	// });
 });
