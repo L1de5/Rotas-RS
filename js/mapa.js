@@ -1,7 +1,6 @@
 var map;
 var directionsDisplay;
 var directionsService = new google.maps.DirectionsService();
-
 function initialize() {	
 	directionsDisplay = new google.maps.DirectionsRenderer();
 	var latlng = new google.maps.LatLng(-18.8800397, -47.05878999999999);
@@ -16,26 +15,53 @@ function initialize() {
 	directionsDisplay.setMap(map);
 	directionsDisplay.setPanel(document.getElementById("trajeto-texto"));
 	
+	if (localStorage.getItem('geolocation') === null){
+		if (navigator.geolocation) {
+			navigator.geolocation.getCurrentPosition(function (position) {
+
+				pontoPadrao = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
+				map.setCenter(pontoPadrao);
+				
+				var geocoder = new google.maps.Geocoder();
+				
+				geocoder.geocode({
+					"location": new google.maps.LatLng(position.coords.latitude, position.coords.longitude)
+				},
+				function(results, status) {
+					console.log(results);
+					if (status == google.maps.GeocoderStatus.OK) {
+						$("#txtEnderecoPartida").val(results[0].formatted_address);
+						localStorage.setItem('geolocation', results[0].formatted_address);
+					}
+				});
+			});
+		}
+	}else{
+		$("#txtEnderecoPartida").val(localStorage.getItem('geolocation'));		
+	}
+}
+function atualiza(){
 	if (navigator.geolocation) {
 		navigator.geolocation.getCurrentPosition(function (position) {
 
 			pontoPadrao = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
 			map.setCenter(pontoPadrao);
-			
+
 			var geocoder = new google.maps.Geocoder();
-			
+
 			geocoder.geocode({
 				"location": new google.maps.LatLng(position.coords.latitude, position.coords.longitude)
-            },
-            function(results, status) {
-				if (status == google.maps.GeocoderStatus.OK) {
-					$("#txtEnderecoPartida").val(results[0].formatted_address);
-				}
-            });
+			},
+				function (results, status) {
+					console.log(results);
+					if (status == google.maps.GeocoderStatus.OK) {
+						$("#txtEnderecoPartida").val(results[0].formatted_address);
+						localStorage.setItem('geolocation', results[0].formatted_address);
+					}
+				});
 		});
 	}
 }
-
 initialize();
 
 $("form").submit(function(event) {
@@ -48,7 +74,7 @@ $("form").submit(function(event) {
 		origin: enderecoPartida,
 		destination: enderecoChegada,
 		travelMode: google.maps.TravelMode.DRIVING
-	};
+	}; 	
 	
 	directionsService.route(request, function(result, status) {
 		if (status == google.maps.DirectionsStatus.OK) {
